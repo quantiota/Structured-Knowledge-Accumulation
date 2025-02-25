@@ -1,14 +1,21 @@
 # Structured Knowledge Accumulation: An Autonomous Framework for Layer-Wise Entropy Reduction in Neural Learning 
 
+![SKA Framework](https://blog.quantiota.ai/static/upload/neural-network-lite.png "enter image title here")
+
+February 2025
+DOI: [10.13140/RG.2.2.35390.80963](http://dx.doi.org/10.13140/RG.2.2.35390.80963)
+License [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+
 ## Abstract
 
-We introduce the Structured Knowledge Accumulation (SKA) framework, which redefines entropy as a dynamic, layer-wise measure of knowledge alignment in neural networks: $H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$, where $\mathbf{z}^{(l)}_k$ is the knowledge vector and $\Delta \mathbf{D}^{(l)}_k$ is the decision probability shift vector at layer $l$ over $K$ forward steps. Rooted in the continuous entropy formulation $H = -\frac{1}{\ln 2} \int z \, dD$, SKA derives the sigmoid function, $D_i^{(l)} = \frac{1}{1 + e^{-z_i^{(l)}}}$, as an emergent property of entropy minimization. This approach generalizes to fully connected networks without backpropagation, with each layer optimizing locally by aligning $\mathbf{z}^{(l)}_k$ with $\Delta \mathbf{D}^{(l)}_k$, guided by $\cos(\theta^{(l)}_{k})$. Total network entropy, $H = \sum_{l=1}^{L} H^{(l)}$, decreases hierarchically as knowledge structures evolve. Offering a scalable, biologically plausible alternative to gradient-based training, SKA bridges information theory and artificial intelligence, with potential applications in resource-constrained and parallel computing environments.
+We introduce the Structured Knowledge Accumulation (SKA) framework, which redefines entropy as a dynamic, layer-wise measure of knowledge alignment in neural networks: $H^{(l)} =  -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$, where $\mathbf{z}^{(l)}_k$ is the knowledge vector and $\Delta \mathbf{D}^{(l)}_k$ is the decision probability shift vector at layer $l$ over $K$ forward steps. Rooted in the continuous entropy formulation $H =  -\frac{1}{\ln 2} \int z \, dD$, SKA derives the sigmoid function, $D_i^{(l)} =  \frac{1}{1 + e^{-z_i^{(l)}}}$, as an emergent property of entropy minimization. This approach generalizes to fully connected networks without backpropagation, with each layer optimizing locally by aligning $\mathbf{z}^{(l)}_k$ with $\Delta \mathbf{D}^{(l)}_k$, guided by $\cos(\theta^{(l)}_{k})$. Total network entropy, $H = \sum_{l=1}^{L} H^{(l)}$, decreases hierarchically as knowledge structures evolve. Offering a scalable, biologically plausible alternative to gradient-based training, SKA bridges information theory and artificial intelligence, with potential applications in resource-constrained and parallel computing environments.
 
 
 
-# Introduction
+## 1. Introduction
 
-Entropy, classically defined by Shannon [@shannon1948] as
+Entropy, classically defined by Shannon<sup>1</sup> as
 $H = -\sum p_i \log_2 p_i$, quantifies uncertainty in a static, discrete
 probabilistic system. While foundational, this formulation falls short
 of capturing the dynamic, continuous structuring of knowledge in
@@ -41,7 +48,7 @@ novel perspective for AI, enhancing optimization efficiency,
 interpretability, and biological plausibility, with implications for
 scalable and distributed neural systems.
 
-# Redefining Entropy in the SKA Framework
+## 2. Redefining Entropy in the SKA Framework
 
 Entropy traditionally quantifies uncertainty in probabilistic systems,
 but its classical form is static and discrete, limiting its
@@ -53,11 +60,21 @@ contrasts Shannon's discrete entropy with our continuous reformulation,
 enabling the use of continuous decision probabilities and supporting the
 derivation of the sigmoid function through entropy minimization.
 
-## Classical Shannon Entropy
+### 2.1 Classical Shannon Entropy
 
 For a binary system with decision probability $D$, Shannon's entropy is:
-$$H = -D \log_2 D - (1 - D) \log_2 (1 - D)$$ Its derivative with respect
-to $D$ is: $$\frac{dH}{dD} = \log_2 \left( \frac{1 - D}{D} \right)$$
+
+$$
+\tag{1}
+H = -D \log_2 D - (1 - D) \log_2 (1 - D) 
+$$
+
+Its derivative with respect to $D$ is: 
+$$
+\tag{2}
+\frac{dH}{dD} = \log_2 \left( \frac{1 - D}{D} \right)
+$$
+
 This formulation assumes $D$ is a fixed probability, typically
 associated with discrete outcomes (e.g., 0 or 1). While foundational, it
 does not capture the continuous evolution of knowledge in a learning
@@ -66,10 +83,14 @@ address this, we seek a continuous entropy measure that accommodates
 dynamic changes in $D$, aligning with the SKA's focus on knowledge
 accumulation.
 
-## Entropy as Knowledge Accumulation
+### 2.2 Entropy as Knowledge Accumulation
 
 In SKA, we redefine entropy for a single neuron as a continuous process:
-$$H = -\frac{1}{\ln 2} \int z \, dD$$ Here, $z$ represents the neuron's
+$$
+\tag{3}
+H = -\frac{1}{\ln 2} \int z \, dD 
+$$
+Here, $z$ represents the neuron's
 structured knowledge, and $dD$ is an infinitesimal change in the
 decision probability, treated as a continuous variable over the range
 $[0, 1]$. The factor $-\frac{1}{\ln 2}$ ensures alignment with base-2
@@ -80,14 +101,26 @@ process.
 
 For a layer $l$ with $n_l$ neurons over $K$ forward steps, we
 approximate this continuous form discretely:
-$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$
+
+$$
+\tag{4}
+H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k
+$$
+
 where $\mathbf{z}^{(l)}_k = [z_1^{(l)}(k), \dots, z_{n_l}^{(l)}(k)]^T$
 is the knowledge vector,
 $\Delta \mathbf{D}^{(l)}_k = [\Delta D_1^{(l)}(k), \dots, \Delta D_{n_l}^{(l)}(k)]^T$
 is the vector of decision probability shifts, and the scalar product is:
-$$\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k = \sum_{i=1}^{n_l} z_i^{(l)}(k) \Delta D_i^{(l)}(k)$$
+$$
+\tag{5}
+\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k = \sum_{i=1}^{n_l} z_i^{(l)}(k) \Delta D_i^{(l)}(k)
+$$
 The total network entropy sums over all layers:
-$$H = \sum_{l=1}^{L} H^{(l)}$$ Equation 3 is the core theoretical
+$$
+\tag{6}
+H = \sum_{l=1}^{L} H^{(l)} 
+$$
+Equation 3 is the core theoretical
 construct, with Equation 4 as its practical discrete approximation. As
 $K \to \infty$ and $\Delta \mathbf{D}^{(l)}_k$ becomes infinitesimally
 small, Equation 4 approaches the continuous integral, enabling us to
@@ -95,14 +128,18 @@ model $D$ as a smooth function of $z$. This continuous perspective is
 essential for deriving the sigmoid using dynamics in later sections,
 while the discrete form supports implementation in neural architectures.
 
-## Accumulated Knowledge
+### 2.3 Accumulated Knowledge
 
 Knowledge accumulates over steps:
-$$z_k = z_0 + \sum_{f=1}^{k} \Delta z_f$$ In a layer,
+$$
+\tag{7}
+z_k = z_0 + \sum_{f=1}^{k} \Delta z_f
+$$
+In a layer,
 $\mathbf{z}^{(l)}_k$ evolves, reducing $H^{(l)}$ as it aligns with
 $\Delta \mathbf{D}^{(l)}_k$.
 
-# Deriving the Sigmoid Function
+## 3. Deriving the Sigmoid Function
 
 The SKA framework posits that the sigmoid function emerges naturally
 from continuous entropy minimization, linking structured knowledge to
@@ -113,36 +150,60 @@ classical Shannon entropy $H_{\text{Shannon}}$, differing by a constant
 derive this equivalence, reinforcing the framework's theoretical
 grounding.
 
-## Key Definitions
+### 3.1 Key Definitions
 
-### Shannon Entropy (for binary decisions)
+#### 3.1.1 Shannon Entropy (for binary decisions)
 
 For a binary system with continuous decision probability $D$:
-$$H_{\text{Shannon}} = -D \log_2 D - (1-D) \log_2 (1-D)$$
-
-### SKA Entropy (layer-wise, for a single neuron)
+$$
+\tag{8}
+H_{\text{Shannon}} = -D \log_2 D - (1-D) \log_2 (1-D)
+$$
+#### 3.1.2 SKA Entropy (layer-wise, for a single neuron)
 
 The SKA entropy, defined continuously as in Section 2.2, is:
-$$H_{\text{SKA}} = -\frac{1}{\ln 2} \int z \, dD,$$ where
+$$
+\tag{9}
+H_{\text{SKA}} = -\frac{1}{\ln 2} \int z \, dD, 
+$$
+where
 $z = -\ln\left(\frac{1-D}{D}\right)$ relates knowledge to $D$,
 consistent with $D = \frac{1}{1 + e^{-z}}$ as shown in Section 3.1.
 
-## Equivalence Proof
+### 3.2 Equivalence Proof
 
 Substituting $z = -\ln\left(\frac{1-D}{D}\right)$ (or equivalently,
 $z = \ln\left(\frac{D}{1-D}\right)$) into $H_{\text{SKA}}$:
-$$H_{\text{SKA}} = -\frac{1}{\ln 2} \int \ln\left(\frac{D}{1-D}\right) dD.$$
+$$
+\tag{10}
+H_{\text{SKA}} = -\frac{1}{\ln 2} \int \ln\left(\frac{D}{1-D}\right) dD.
+$$
 Evaluate the integral with substitution $u = D$, $du = dD$:
-$$\int \ln\left(\frac{D}{1-D}\right) dD = D \ln\left(\frac{D}{1-D}\right) + \ln(1-D).$$
+$$
+\tag{11}
+\int \ln\left(\frac{D}{1-D}\right) dD = D \ln\left(\frac{D}{1-D}\right) + \ln(1-D).
+$$
 Substituting back:
-$$H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln\left(\frac{D}{1-D}\right) + \ln(1-D) \right].$$
+$$
+\tag{12}
+H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln\left(\frac{D}{1-D}\right) + \ln(1-D) \right].
+$$
 Rewrite $\ln\left(\frac{D}{1-D}\right) = \ln D - \ln(1-D)$:
-$$H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln D - D \ln(1-D) + \ln(1-D) \right].$$
+$$
+\tag{13}
+H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln D - D \ln(1-D) + \ln(1-D) \right].
+$$
 Factorize:
-$$H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln D + (1-D) \ln(1-D) \right].$$
-Thus: $$H_{\text{SKA}} = H_{\text{Shannon}}.$$
-
-## Implications
+$$
+\tag{14}
+H_{\text{SKA}} = -\frac{1}{\ln 2} \left[ D \ln D + (1-D) \ln(1-D) \right].
+$$
+Thus: 
+$$
+\tag{15}
+H_{\text{SKA}} = H_{\text{Shannon}}.
+$$
+### 3.3 Implications
 
 -   **Zero Difference**: The SKA and Shannon entropies are identical
     (differing by zero) when $D = \frac{1}{1 + e^{-z}}$, confirming the
@@ -151,7 +212,7 @@ Thus: $$H_{\text{SKA}} = H_{\text{Shannon}}.$$
 -   **Knowledge Alignment**: This equivalence stems from $z$ structuring
     $D$ to minimize uncertainty, as defined in Sections 2 and 3.
 
-## Significance
+### 3.4 Significance
 
 1.  **Theoretical Consistency**: SKA extends Shannon entropy into a
     continuous, dynamic context while preserving its core properties for
@@ -165,7 +226,7 @@ Thus: $$H_{\text{SKA}} = H_{\text{Shannon}}.$$
 3.  **Biological Plausibility**: The continuous, local alignment of $z$
     with $D$ mirrors plausible neural learning mechanisms.
 
-## Summary
+### 3.5 Summary
 
 When $D$ is the sigmoid function, $H_{\text{SKA}}$ matches
 $H_{\text{Shannon}}$ exactly, with a difference of zero. This result,
@@ -175,7 +236,7 @@ foundation and its seamless integration with information theory,
 leveraging continuous dynamics for neural learning with classical
 information theory.
 
-# The Fundamental Law of Entropy Reduction
+## 4 The Fundamental Law of Entropy Reduction
 
 The SKA framework establishes a fundamental law governing how entropy
 decreases as structured knowledge evolves. This section derives this law
@@ -185,39 +246,52 @@ We then provide a discrete approximation for practical implementation,
 ensuring the framework's applicability to neural networks while rooting
 it in a continuous theoretical foundation.
 
-## Continuous Dynamics
+### 4.1 Continuous Dynamics
 
 For a single neuron, the rate of entropy change with respect to
 structured knowledge $z$ is derived from the continuous entropy
 $H = -\frac{1}{\ln 2} \int z \, dD$. Taking the partial derivative:
-$$\frac{\partial H}{\partial z} = -\frac{1}{\ln 2} z D (1 - D)$$ This
+$$
+\tag{16}
+\frac{\partial H}{\partial z} = -\frac{1}{\ln 2} z D (1 - D)
+$$
+This
 follows from $D = \frac{1}{1 + e^{-z}}$ (as derived in Section 4), where
 $\frac{dD}{dz} = D (1 - D)$, and reflects the neuron's local
 contribution to entropy reduction. For a layer $l$ with $n_l$ neurons at
 step $k$, this extends to each neuron $i$:
-$$\frac{\partial H^{(l)}}{\partial z_i^{(l)}(k)} = -\frac{1}{\ln 2} z_i^{(l)}(k) D_i^{(l)}(k) \left(1 - D_i^{(l)}(k)\right)$$
+$$
+\tag{17}
+\frac{\partial H^{(l)}}{\partial z_i^{(l)}(k)} = -\frac{1}{\ln 2} z_i^{(l)}(k) D_i^{(l)}(k) \left(1 - D_i^{(l)}(k)\right)
+$$
 Equation 17 governs the continuous reduction of layer-wise entropy
 $H^{(l)}$, driven by the alignment of $z_i^{(l)}(k)$ with the sigmoidal
 decision probability $D_i^{(l)}(k)$. This dynamic, localized process
 underpins the SKA's forward-only learning mechanism, leveraging the
 continuous evolution of $D$ over time or input processing.
 
-## Discrete Dynamics
+### 4.2 Discrete Dynamics
 
 In practice, neural networks operate over discrete forward steps. For a
 single neuron at step $k$, the entropy gradient approximates the
 continuous form, incorporating the change in decision probability
 $\Delta D_k = D_k - D_{k-1}$:
-$$\frac{\partial H}{\partial z} \big|_k = -\frac{1}{\ln 2} \left[ z_k D_k (1 - D_k) + \Delta D_k \right]$$
+$$
+\tag{18}
+\frac{\partial H}{\partial z} \big|_k = -\frac{1}{\ln 2} \left[ z_k D_k (1 - D_k) + \Delta D_k \right]
+$$
 For layer $l$ at step $k$, this becomes:
-$$\frac{\partial H^{(l)}}{\partial z_i^{(l)}(k)} = -\frac{1}{\ln 2} z_i^{(l)}(k) \left[ D_i^{(l)}(k) \left(1 - D_i^{(l)}(k)\right) + \Delta D_i^{(l)}(k) \right]$$
+$$
+\tag{19}
+\frac{\partial H^{(l)}}{\partial z_i^{(l)}(k)} = -\frac{1}{\ln 2} z_i^{(l)}(k) \left[ D_i^{(l)}(k) \left(1 - D_i^{(l)}(k)\right) + \Delta D_i^{(l)}(k) \right]
+$$
 Equation 19 adapts the continuous law to discrete steps, where
 $\Delta D_i^{(l)}(k)$ captures the step-wise shift in $D_i^{(l)}(k)$.
 While Equation 17 represents the ideal continuous dynamics, Equation 19
 provides a computable approximation, aligning knowledge adjustments with
 observed changes in decision probabilities across discrete iterations.
 
-# Generalization to Fully Connected Networks
+## 5 Generalization to Fully Connected Networks
 
 The SKA framework extends seamlessly from single neurons to fully
 connected neural networks, leveraging the continuous entropy reduction
@@ -240,18 +314,33 @@ For a network with $L$ layers:
 
 Layer-wise entropy, rooted in the continuous formulation, is
 approximated discretely:
-$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$
+
+$$
+\tag{20}
+H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k
+$$
+
 The alignment between knowledge and decision shifts is quantified as:
-$$\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k = \|\mathbf{z}^{(l)}_k\| \| \Delta \mathbf{D}^{(l)}_k\| \cos(\theta^{(l)}_k)$$
+
+$$
+\tag{21}
+\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k = \|\mathbf{z}^{(l)}_k\| \| \Delta \mathbf{D}^{(l)}_k\| \cos(\theta^{(l)}_k)
+$$
 Total network entropy aggregates across layers:
-$$H = \sum_{l=1}^{L} H^{(l)}$$ Learning proceeds by aligning
+
+$$
+\tag{22}
+H = \sum_{l=1}^{L} H^{(l)} 
+$$
+
+Learning proceeds by aligning
 $\mathbf{z}^{(l)}_k$ with $\Delta \mathbf{D}^{(l)}_k$ at each layer,
 reducing $H^{(l)}$ locally without requiring backward error propagation.
 In the continuous limit, this alignment reflects a smooth evolution of
 knowledge, approximated here by discrete steps for computational
 feasibility.
 
-# Learning Without Backpropagation
+## 6 Learning Without Backpropagation
 
 SKA achieves learning through localized entropy minimization,
 eliminating the need for backpropagation by leveraging forward-only
@@ -260,34 +349,52 @@ supporting metrics, grounded in the continuous entropy reduction law,
 and adapted for discrete implementation in fully connected networks.
 
 Entropy minimization at layer $l$ is driven by:
-$$\frac{\partial H^{(l)}}{\partial w_{ij}^{(l)}} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \frac{\partial (\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k)}{\partial w_{ij}^{(l)}}$$
+$$
+\tag{23}
+\frac{\partial H^{(l)}}{\partial w_{ij}^{(l)}} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \frac{\partial (\mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k)}{\partial w_{ij}^{(l)}}
+$$
+
 The update rule adjusts weights forward:
-$$w_{ij}^{(l)} \leftarrow w_{ij}^{(l)} - \eta \frac{\partial H^{(l)}}{\partial w_{ij}^{(l)}}$$
+
+$$
+\tag{24}
+w_{ij}^{(l)} \leftarrow w_{ij}^{(l)} - \eta \frac{\partial H^{(l)}}{\partial w_{ij}^{(l)}}
+$$
+
 Here, $\Delta D_i^{(l)}(k)$ is computed directly from forward passes,
 bypassing the need for error backpropagation. This local adjustment
 aligns with the continuous dynamics of knowledge evolution, approximated
 over discrete steps.
 
-## Step-wise Entropy Change {#step-wise-entropy-change .unnumbered}
-
+### Step-wise Entropy Change 
 To quantify knowledge accumulation, the step-wise entropy change at
 layer $l$ and step $k$ is:
-$$\Delta H^{(l)}_k = H^{(l)}_k - H^{(l)}_{k-1} = -\frac{1}{\ln 2} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$
+
+$$
+\tag{25}
+\Delta H^{(l)}_k = H^{(l)}_k - H^{(l)}_{k-1} = -\frac{1}{\ln 2} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k
+$$
 This measures uncertainty reduction as $\mathbf{z}^{(l)}_k$ aligns with
 $\Delta \mathbf{D}^{(l)}_k$, with total layer entropy as:
-$$H^{(l)} = \sum_{k=1}^{K} \Delta H^{(l)}_k$$
+$$
+\tag{26}
+H^{(l)} = \sum_{k=1}^{K} \Delta H^{(l)}_k
+$$
 
-## Entropy Gradient {#entropy-gradient .unnumbered}
+### Entropy Gradient 
 
 The gradient of $H^{(l)}$ with respect to $\mathbf{z}^{(l)}_k$ at step
 $k$ is:
-$$\nabla H^{(l)} = \frac{\partial H^{(l)}}{\partial \mathbf{z}^{(l)}_k} = -\frac{1}{\ln 2} \mathbf{z}^{(l)}_k \odot \mathbf{D}'^{(l)}_k + \Delta \mathbf{D}_k^{(l)}$$
+$$
+\tag{27}
+\nabla H^{(l)} = \frac{\partial H^{(l)}}{\partial \mathbf{z}^{(l)}_k} = -\frac{1}{\ln 2} \mathbf{z}^{(l)}_k \odot \mathbf{D}'^{(l)}_k + \Delta \mathbf{D}_k^{(l)}
+$$
 where
 $\mathbf{D}'^{(l)}_k = \mathbf{D}^{(l)}_k \odot (\mathbf{1} - \mathbf{D}^{(l)}_k)$
 is the sigmoid derivative. This gradient guides updates to minimize
 $H^{(l)}$, aligning knowledge with decision shifts.
 
-## Knowledge Evolution Across Layers {#knowledge-evolution-across-layers .unnumbered}
+### Knowledge Evolution Across Layers 
 
 The gradient
 $\nabla H^{(l)} = -\frac{1}{\ln 2} \mathbf{z}^{(l)}_k \odot \mathbf{D}'^{(l)}_k + \Delta \mathbf{D}_k^{(l)}$
@@ -296,23 +403,28 @@ $\mathbf{D}^{(l-1)}_k$ feeds into $\mathbf{z}^{(l)}_k$, each layer
 adapts uniquely---extracting broad features early and refining decisions
 later---mirroring a continuous knowledge flow approximated discretely.
 
-## Governing Equation of SKA {#governing-equation-of-ska .unnumbered}
-
+### Governing Equation of SKA#
 The network evolves according to:
-$$\nabla H^{(l)} + \frac{1}{\ln 2} \mathbf{z}^{(l)}_k \odot \mathbf{D}'^{(l)}_k + \Delta \mathbf{D}_k^{(l)} = 0$$
+$$
+\tag{28}
+\nabla H^{(l)} + \frac{1}{\ln 2} \mathbf{z}^{(l)}_k \odot \mathbf{D}'^{(l)}_k + \Delta \mathbf{D}_k^{(l)} = 0
+$$
 where $\nabla H^{(l)}$ minimizes entropy layer-wise, with updates
 following $-\nabla H^{(l)}$ to align $\mathbf{z}^{(l)}_k$ with
 $\Delta \mathbf{D}^{(l)}_k$.
 
-## Inter-Layer Entropy Change {#inter-layer-entropy-change .unnumbered}
+### Inter-Layer Entropy Change {#inter-layer-entropy-change .unnumbered}
 
 The entropy change between layers $l$ and $l+1$ at step $k$ is:
-$$\Delta H^{(l,l+1)}_k = -\frac{1}{\ln 2} \left[ \mathbf{z}^{(l+1)}_k \cdot \Delta \mathbf{D}^{(l+1)}_k - \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k \right]$$
+$$
+\tag{29}
+\Delta H^{(l,l+1)}_k = -\frac{1}{\ln 2} \left[ \mathbf{z}^{(l+1)}_k \cdot \Delta \mathbf{D}^{(l+1)}_k - \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k \right]
+$$
 This quantifies the spatial evolution of knowledge, complementing the
 temporal guidance of $\nabla H^{(l)}$, as entropy decreases through the
 network.
 
-# Application to Neural Networks
+## 7 Application to Neural Networks
 
 SKA structures knowledge hierarchically across layers, reducing total
 entropy $H$ through continuous dynamics approximated over discrete
@@ -322,21 +434,41 @@ alignment between $\mathbf{z}^{(l)}_k$ and $\Delta \mathbf{D}^{(l)}_k$.
 This forward-only process leverages the framework's scalability and
 autonomy, applicable to diverse network architectures.
 
-<figure id="fig:network">
+- ![SKA Layer](https://blog.quantiota.ai/static/upload/ska-layer.png "enter image title here")
 
-<figcaption>Layer-wise entropy reduction across layers at step <span
-class="math inline"><em>k</em></span>. Color intensity represents
-entropy level (darker blue = lower entropy), decreasing from Layer 1 to
-Layer 4. Each layer locally minimizes entropy by aligning knowledge
-vectors <span
-class="math inline"><strong>z</strong><sub><em>k</em></sub><sup>(<em>l</em>)</sup></span>
-with decision change vectors <span
-class="math inline"><em>Δ</em><strong>D</strong><sub><em>k</em></sub><sup>(<em>l</em>)</sup></span>,
-measured by <span
-class="math inline">cos (<em>θ</em><sub><em>k</em></sub><sup>(<em>l</em>)</sup>)</span>.</figcaption>
-</figure>
+Layer-wise entropy reduction across layers at step $k$. Color intensity represents entropy level (darker blue = lower entropy), decreasing from Layer 1 to Layer 4. Each layer locally minimizes entropy by aligning knowledge vectors $\mathbf{z}^{(l)}_k$ with decision change vectors $\Delta \mathbf{D}^{(l)}_k$, measured by $\cos(\theta^{(l)}_k)$.
 
-# Implications and Future Work
+## 8 Tensor Implementation
+
+To facilitate the practical application of SKA in scalable and parallel computing environments, we propose a tensor-based implementation that preserves the theoretical framework while enhancing computational efficiency. This section introduces a tensor notation for implementing SKA, leveraging multidimensional arrays to unify the operations across $ L $ layers, $ K $ forward steps, and $ n_l $ neurons per layer, without modifying the original vector-based formulation.
+
+For a network with $ L $ layers, we define the following tensors:
+
+- $ \mathbf{Z} $, the knowledge tensor of shape $ [L, K, n_{\text{max}}] $, where 
+$ \mathbf{Z}_{l,k,i} = z_i^{(l)}(k) $ represents the knowledge vector $ \mathbf{z}^{(l)}_k $ for all layers, steps, and neurons (padded to a uniform $ n_{\text{max}} $),
+- $ \mathbf{D} $, the decision probability tensor of shape $ [L, K, n_{\text{max}}] $, where $ \mathbf{D}_{l,k,i} = D_i^{(l)}(k) = \sigma(\mathbf{Z}_{l,k,i}) $,
+- $ \Delta \mathbf{D} $, the shift tensor of shape $ [L, K-1, n_{\text{max}}] $, where $ \Delta \mathbf{D}_{l,k,i} = \mathbf{D}_{l,k+1,i} - \mathbf{D}_{l,k,i} $,
+- $ \mathbf{W} $, the weight tensor of shape $ [L, n_{\text{max}}, n_{\text{max}}] $, where $ \mathbf{W}_{l,i,j} = w_{ij}^{(l)} $,
+- $ \mathbf{b} $, the bias tensor of shape $ [L, n_{\text{max}}] $, where $ \mathbf{b}_{l,i} = b_i^{(l)} $.
+
+The knowledge tensor is computed as $ \mathbf{Z} = \mathbf{W} \cdot \mathbf{X} + \mathbf{b} $, where $ \mathbf{X} $ is the input tensor of shape $ [L, K, n_{\text{max}}] $, with $ \mathbf{X}_{0,:,:} $ as the network input and $ \mathbf{X}_{l,:,:} = \mathbf{D}_{l-1,:,:} $ for subsequent layers.
+
+Layer-wise entropy $ H^{(l)} $ is implemented as:
+
+$$ \displaystyle \mathbf{H}_l = -\frac{1}{\ln 2} \sum_{k=1}^{K-1} \mathbf{Z}_{l,k+1,:} \cdot \Delta \mathbf{D}_{l,k,:}, $$
+
+where $ \mathbf{H} $ is a tensor of shape $ [L] $, and total entropy is $ H = \sum_{l=1}^{L} \mathbf{H}_l $. The entropy gradient becomes:
+
+$$ \nabla \mathbf{H} = -\frac{1}{\ln 2} \mathbf{Z}_{:,1:K,:} \odot \mathbf{D}' + \Delta \mathbf{D}, $$
+
+where $ \mathbf{D}' = \mathbf{D}_{:,1:K,:} \odot (\mathbf{1} - \mathbf{D}_{:,1:K,:}) $ is the sigmoid derivative tensor of shape $ [L, K-1, n_{\text{max}}] $.
+
+Weight updates are performed as $ \mathbf{W} \leftarrow \mathbf{W} - \eta \frac{\partial \mathbf{H}}{\partial \mathbf{W}} $, leveraging tensor operations to compute gradients across all layers and steps simultaneously. Alignment monitoring uses 
+
+$ \Theta_{l,k} = \cos(\theta^{(l)}_{k+1}) = \displaystyle \frac{\mathbf{Z}_{l,k+1,:} \cdot \Delta \mathbf{D}_{l,k,:}}{\|\mathbf{Z}_{l,k+1,:}\| \| \Delta \mathbf{D}_{l,k,:}\|} $, a tensor of shape $ [L, K-1] $.
+
+This tensor implementation enhances efficiency and scalability by consolidating multidimensional operations, supporting parallel computation, and facilitating real-time processing, as outlined in Sections 1 and 8, while maintaining the original theoretical constructs.
+## 9 Implications and Future Work
 
 The SKA framework offers transformative potential for neural network
 design and application, rooted in its continuous entropy reduction
@@ -361,7 +493,7 @@ principles. Key implications and research directions include:
 -   **Real-Time Processing**: Single-pass updates suit SKA for
     processing live data streams efficiently.
 
-# Conclusion
+## 10 Conclusion
 
 The SKA framework reimagines neural networks as systems that structure
 knowledge to minimize entropy, deriving the sigmoid function from
@@ -370,7 +502,6 @@ leveraging local, forward-only dynamics, SKA offers a scalable,
 biologically inspired paradigm for AI, bridging information theory and
 neural learning with broad applicability.
 
-::: thebibliography
-1 C. E. Shannon, "A Mathematical Theory of Communication," *Bell System
+## Reference
+1. C. E. Shannon, "A Mathematical Theory of Communication," *Bell System
 Technical Journal*, vol. 27, pp. 379--423, 1948.
-:::
