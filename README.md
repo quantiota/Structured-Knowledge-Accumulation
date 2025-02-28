@@ -102,7 +102,7 @@ $$
 1. **Learning Without Backpropagation**:
 
    - Weights are updated using:
-   - 
+    
 $$
 W \leftarrow W - \eta \frac{\partial H}{\partial W}
 $$
