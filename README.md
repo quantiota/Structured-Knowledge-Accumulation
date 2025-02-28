@@ -83,22 +83,24 @@ After execution, the script generates the following plots:
 ## Understanding the SKA Model
 
 ### **Key Components**
-1. **Knowledge Representation (`Z`)**:
+1. **Knowledge Representation ($Z$)**:
    - Computed as $Z = Wx + b$
    - Encodes structured knowledge per neuron.
   
-2. **Decision Probabilities (`D`)**:
+2. **Decision Probabilities ($D$)**:
    - Defined as $D = \sigma(Z)$ (sigmoid transformation).
    - Represents the evolving decision space.
 
 3. **Entropy Minimization**:
    - Entropy is redefined as:
+  
 $$
 H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} Z_k \cdot \Delta D_k
 $$
    - Learning occurs by aligning **Z** with **decision shifts (ΔD)**.
 
 1. **Learning Without Backpropagation**:
+
    - Weights are updated using:
 $$
 W \leftarrow W - \eta \frac{\partial H}{\partial W}
@@ -113,8 +115,9 @@ $$
 SKA/
 │── ska_model.py             # SKA model definition
 │── run_ska.py               # Script to train and visualize results
-│── mnist_subset_100_per_class.pt  # Pre-saved dataset
+│── subset                   # Pre-saved dataset
 │── results/                 # Stores output images
+|── articles/                # Research papers and articles
 │── README.md                # Project documentation
 ```
 
