@@ -17,7 +17,7 @@ This repository contains:
 - **Layer-Wise Knowledge Alignment**: SKA exhibits **self-organized entropy reduction**, leading to equilibrium learning dynamics.
 - **Visualization Tools**: Generates entropy heatmaps, cosine alignment plots, and decision probability evolution charts.
 
----
+
 
 ## Installation
 
@@ -58,7 +58,7 @@ for img, label in mnist_data:
 torch.save(subset, "mnist_subset_100_per_class.pt")
 ```
 
----
+
 
 ## Running SKA
 
@@ -78,7 +78,7 @@ After execution, the script generates the following plots:
 - `cosine_history_single_pass.png`
 - `output_distribution_single_pass.png`
 
----
+
 
 ## Understanding the SKA Model
 
@@ -107,7 +107,7 @@ W \leftarrow W - \eta \frac{\partial H}{\partial W}
 $$
    - No gradients from backward error propagation.
 
----
+
 
 ## Directory Structure
 
@@ -121,7 +121,7 @@ SKA/
 │── README.md                # Project documentation
 ```
 
----
+
 
 ## Future Work
 
@@ -129,20 +129,20 @@ SKA/
 - Applying SKA to real-time streaming datasets.
 - Exploring its use in hardware-efficient AI models.
 
----
+
 
 ## Citation
 
 
 [DOI: 10.13140/RG.2.2.35390.80963](http://dx.doi.org/10.13140/RG.2.2.35390.80963)
 
----
+
 
 ## License
 
 This project is open-source under the **MIT License**.
 
----
+
 
 
 
