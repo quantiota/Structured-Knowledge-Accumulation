@@ -97,7 +97,7 @@ After execution, the script generates the following plots:
 $$
 H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} Z_k \cdot \Delta D_k
 $$
-   - Learning occurs by aligning **Z** with **decision shifts (ΔD)**.
+   - Learning occurs by aligning **$Z$** with **decision shifts ($ΔD$)**.
 
 1. **Learning Without Backpropagation**:
 
