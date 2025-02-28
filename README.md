@@ -115,7 +115,7 @@ $$
 SKA/
 │── ska_model.py             # SKA model definition
 │── run_ska.py               # Script to train and visualize results
-│── subset                   # Pre-saved dataset
+│── subset/                  # Pre-saved dataset
 │── results/                 # Stores output images
 |── articles/                # Research papers and articles
 │── README.md                # Project documentation
@@ -134,7 +134,7 @@ SKA/
 ## Citation
 
 
-DOI: 10.13140/RG.2.2.35390.80963
+[DOI: 10.13140/RG.2.2.35390.80963](http://dx.doi.org/10.13140/RG.2.2.35390.80963)
 
 ---
 
@@ -144,6 +144,5 @@ This project is open-source under the **MIT License**.
 
 ---
 
-**SKA is an exciting step toward self-organizing AI models! Try it today and contribute to the next revolution in AI.**
-```
+
 
