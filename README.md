@@ -126,20 +126,7 @@ SKA/
 - Applying SKA to real-time streaming datasets.
 - Exploring its use in hardware-efficient AI models.
 
----
 
-## Citation
-
-If you use this work, consider citing:
-
-```
-@article{Mahi2025SKA,
-  title={Structured Knowledge Accumulation: An Autonomous Framework for Layer-Wise Entropy Reduction in Neural Learning},
-  author={Bouarfa Mahi},
-  journal={arXiv},
-  year={2025}
-}
-```
 
 ---
 
@@ -149,16 +136,6 @@ This project is open-source under the **MIT License**.
 
 ---
 
-🚀 **SKA is an exciting step toward self-organizing AI models! Try it today and contribute to the next revolution in AI.**
+**SKA is an exciting step toward self-organizing AI models! Try it today and contribute to the next revolution in AI.**
 ```
 
----
-
-This README provides:
-- A **clear introduction** to SKA.
-- **Installation instructions** for dependencies.
-- **Usage details** with expected outputs.
-- A **technical breakdown** of the model's workings.
-- **Future directions** for research.
-
-Would you like me to create the `ska_model.py` and `run_ska.py` files separately in your repository? 🚀
