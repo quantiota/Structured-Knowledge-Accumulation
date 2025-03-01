@@ -37,7 +37,9 @@ These areas ensure that participants have the necessary background to validate S
 
 This document outlines the details of a Kaggle competition designed to benchmark the [Structured Knowledge Accumulation (SKA) framework](http://dx.doi.org/10.13140/RG.2.2.35390.80963)—a novel, backpropagation-free approach to neural learning developed as a theoretical concept. SKA redefines entropy as a dynamic, layer-wise process 
 
-$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$,
+$$
+H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k
+$$,
 
  offering a fresh perspective on pattern recognition. Participants are invited to explore its potential against classical models. Notebooks and models are enabled, allowing you to work directly on Kaggle with the provided datasets.
 
