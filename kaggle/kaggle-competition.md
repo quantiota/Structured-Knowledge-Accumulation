@@ -59,11 +59,19 @@ Participants will predict class labels—digits (0–9) for MNIST, clothing type
 
 # 6. Methods and Existing Models Tried and Current Benchmarks
 
-[SKA is a theoretical framework](https://www.researchgate.net/publication/389272110_Structured_Knowledge_Accumulation_An_Autonomous_Framework_for_Layer-Wise_Entropy_Reduction_in_Neural_Learning) featuring entropy-driven learning $$ H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k $$ and forward updates, yet to be implemented. Classical shallow neural networks with SGD and backpropagation serve as established baselines for comparison. No SKA benchmarks currently exist—this competition offers the opportunity to create them from the ground up.
+[SKA is a theoretical framework](https://www.researchgate.net/publication/389272110_Structured_Knowledge_Accumulation_An_Autonomous_Framework_for_Layer-Wise_Entropy_Reduction_in_Neural_Learning) featuring entropy-driven learning 
+
+$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$ 
+
+and forward updates, yet to be implemented. Classical shallow neural networks with SGD and backpropagation serve as established baselines for comparison. No SKA benchmarks currently exist—this competition offers the opportunity to create them from the ground up.
 
 # 7. Potential Impact on the Industry or Field
 
-Benchmarking SKA $$ H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k $$ could influence the AI industry by demonstrating a simpler, more interpretable alternative to classical models, excelling in few-shot learning across diverse datasets. Success here may inspire lightweight AI solutions for resource-constrained environments like edge devices and real-time applications.
+Benchmarking SKA 
+
+$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$ 
+
+could influence the AI industry by demonstrating a simpler, more interpretable alternative to classical models, excelling in few-shot learning across diverse datasets. Success here may inspire lightweight AI solutions for resource-constrained environments like edge devices and real-time applications.
 
 # 8. Type of Data Available
 
