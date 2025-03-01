@@ -43,7 +43,11 @@ $$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mat
 
 # 3. Overall Objective of the Competition
 
-This competition aims to benchmark SKA—a neural learning framework that replaces backpropagation with an entropy-driven approach $$ H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k $$. The task involves implementing SKA and comparing it to traditional models (such as SGD) across MNIST (digits), Fashion-MNIST (clothing), CIFAR-10 (images), and a text Q&A set, using 100 samples per class (some noisy) for image datasets and 100 total Q&A pairs. The goal is to determine if SKA’s autonomous learning can surpass classical methods in few-shot scenarios and establish a performance baseline.
+This competition aims to benchmark SKA—a neural learning framework that replaces backpropagation with an entropy-driven approach 
+
+$$H^{(l)} = -\frac{1}{\ln 2} \sum_{k=1}^{K} \mathbf{z}^{(l)}_k \cdot \Delta \mathbf{D}^{(l)}_k$$
+
+ The task involves implementing SKA and comparing it to traditional models (such as SGD) across MNIST (digits), Fashion-MNIST (clothing), CIFAR-10 (images), and a text Q&A set, using 100 samples per class (some noisy) for image datasets and 100 total Q&A pairs. The goal is to determine if SKA’s autonomous learning can surpass classical methods in few-shot scenarios and establish a performance baseline.
 
 # 4. Competition Problem Statement in a Single Sentence
 
