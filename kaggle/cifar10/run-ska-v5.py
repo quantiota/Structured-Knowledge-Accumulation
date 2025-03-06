@@ -7,6 +7,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, TensorDataset, Subset
 import time
 import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Set random seed for reproducibility
 torch.manual_seed(42)
@@ -356,7 +357,7 @@ class SKAModel(nn.Module):
 
 # Training parameters
 model = SKAModel()
-learning_rate = 0.0075
+learning_rate = 0.001
 
 # SKA training over multiple forward steps
 total_entropy = 0
@@ -462,6 +463,82 @@ def save_metric_csv(metric_data, filename, layers):
 
 layers = len(model.layer_sizes)
 steps = model.K
+
+# Assuming 'images' is the tensor loaded from the CIFAR-10 dataset
+test_image_index = 5  # Change this index to any valid value within the range of 'images'
+test_image = images[test_image_index].unsqueeze(0)
+
+
+
+# Function to unnormalize CIFAR-10 images for visualization
+def unnormalize(img):
+    img = img * 0.5 + 0.5  # Reverse normalization: (0.5, 0.5, 0.5) mean/std
+    return img.clamp(0, 1)  # Ensure values are in [0, 1]
+
+# Function to retrieve and visualize similar images
+def retrieve_similar_images(model, test_image, dataset, num_similar=10):
+    model.eval()
+    with torch.no_grad():
+        all_loader = DataLoader(dataset, batch_size=1000, shuffle=False)
+        all_images, all_labels = next(iter(all_loader))
+        all_features = model(all_images).cpu().numpy()
+
+        test_feature = model(test_image).cpu().numpy()
+
+        similarities = cosine_similarity(test_feature, all_features).flatten()
+        top_indices = np.argsort(similarities)[::-1][:num_similar]  # Descending order
+
+        # Ensure top_indices are contiguous
+        top_indices = np.array(top_indices).copy()
+
+
+        top_similarities = similarities[top_indices]
+
+
+        similar_images = all_images[top_indices]
+        similar_labels = all_labels[top_indices]
+
+        class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 
+                       'dog', 'frog', 'horse', 'ship', 'truck']
+
+        plt.figure(figsize=(15, 5))
+
+        # Plot test image
+        plt.subplot(2, 6, 1)
+        test_img_np = unnormalize(test_image.squeeze()).permute(1, 2, 0).cpu().numpy()
+        plt.imshow(test_img_np)
+        plt.title("Test Image")
+        plt.axis('off')
+
+        # Similar images visualization
+        for i in range(num_similar):
+            plt.subplot(2, 6, i + 2)
+            img_np = unnormalize(similar_images[i]).permute(1, 2, 0).cpu().numpy()
+            plt.imshow(img_np)
+            plt.title(f"{class_names[similar_labels[i]]}\nSim: {top_similarities[i]:.3f}")
+            plt.axis('off')
+
+        plt.tight_layout()
+        plt.savefig("similar_images.png")
+        plt.show()
+
+        return top_indices, top_similarities
+
+# Define class names globally
+class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 
+               'dog', 'frog', 'horse', 'ship', 'truck']
+
+print("Retrieving 10 similar images for the test image...")
+top_indices, top_similarities = retrieve_similar_images(model, test_image, cifar_subset)
+
+for idx, sim in zip(top_indices, top_similarities):
+    label = class_names[labels[idx]]
+    print(f"Image Index: {idx}, Label: {label}, Similarity: {sim:.4f}")
+
+
+
+
+
 
 save_metric_csv(model.entropy_history, "entropy_history.csv", layers)
 save_metric_csv(model.cosine_history, "cosine_history.csv", layers)
