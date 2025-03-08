@@ -79,7 +79,7 @@ class SKAModel(nn.Module):
         return x
 
     def calculate_entropy(self):
-        """Computes entropy reduction and cos(theta) per layer."""
+        """Computes entropy reduction, cos(theta), and Tensor Net per layer."""
         total_entropy = 0
         for l in range(len(self.layer_sizes)):
             if self.Z[l] is not None and self.D_prev[l] is not None and self.D[l] is not None and self.Z_prev[l] is not None:
@@ -87,27 +87,31 @@ class SKAModel(nn.Module):
                 self.delta_D[l] = self.D[l] - self.D_prev[l]
                 # Compute delta Z (for Tensor Net)
                 delta_Z = self.Z[l] - self.Z_prev[l]
-                # Entropy reduction using SKA formula
-                dot_product = torch.sum(self.Z[l] * self.delta_D[l])
-                layer_entropy = -1 / np.log(2) * dot_product
+
+                # Compute H_lk as a tensor (element-wise dot product, same shape as D)
+                H_lk = -1 / np.log(2) * (self.Z[l] * self.delta_D[l])  # Element-wise multiplication
+
+                # Compute layer-wise entropy as the sum over all elements
+                layer_entropy = torch.sum(H_lk)  # Scalar, for history tracking
                 self.entropy[l] = layer_entropy.item()
                 self.entropy_history[l].append(layer_entropy.item())
 
                 # Compute cos(theta) for alignment
+                dot_product = torch.sum(self.Z[l] * self.delta_D[l])
                 z_norm = torch.norm(self.Z[l])
                 delta_d_norm = torch.norm(self.delta_D[l])
                 if z_norm > 0 and delta_d_norm > 0:
                     cos_theta = dot_product / (z_norm * delta_d_norm)
                     self.cosine_history[l].append(cos_theta.item())
                 else:
-                    self.cosine_history[l].append(0.0)  # Default if norms are zero
+                    self.cosine_history[l].append(0.0)
 
                 total_entropy += layer_entropy
 
                 # Compute Tensor Net: sum of (D - H) * delta_Z
-                tensor_net_step = torch.sum((self.D[l] - layer_entropy) * delta_Z)
+                tensor_net_step = torch.sum((self.D[l] - H_lk) * delta_Z)
                 self.net_history[l].append(tensor_net_step.item())
-                self.tensor_net_total[l] += tensor_net_step.item()  # Accumulate over K
+                self.tensor_net_total[l] += tensor_net_step.item()
 
         return total_entropy
 
@@ -415,3 +419,4 @@ df_output = pd.DataFrame(model.output_history, columns=[f"Class {i}" for i in ra
 df_output.to_csv("output_distribution.csv", index_label="Step")
 print("Saved output_distribution.csv")
 print("All metric data saved. You can now use TikZ in LaTeX to rebuild figures.")
+
